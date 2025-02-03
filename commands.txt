@@ -1,0 +1,1 @@
+bsub -P ALS -J run-jointgenotype-test -q priority -R "rusage[mem=32000]" -oo nextflow-run-GenotypeGVCF.out -eo nextflow-run-GenotypeGVCF.err "sh nextflow-run-GenotypeGVCF.sh"

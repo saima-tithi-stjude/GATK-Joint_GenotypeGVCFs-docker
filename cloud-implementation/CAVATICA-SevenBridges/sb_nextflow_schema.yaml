@@ -1,0 +1,79 @@
+app_content:
+  code_package: 673f66450aa8f306d82d5f88
+  entrypoint: main.nf
+class: nextflow
+cwlVersion: None
+doc: A cloud based pipeline for generating cohort joint called VCF files from GVCF
+  files using GATK joint genotypeGVCF pipeline.
+inputs:
+- doc: resource files
+  id: resourceFiles
+  inputBinding:
+    prefix: --resourceFiles
+  type:
+  - Directory
+- doc: directory containing gvcf files, all gvcf file names must be in "*.g.vcf.gz"
+    format
+  id: gvcfFolder
+  inputBinding:
+    prefix: --gvcfFolder
+  type:
+  - Directory
+- doc: file containing GVCF file names, one GVCF filename per line
+  id: sampleList
+  inputBinding:
+    prefix: --sampleList
+  type:
+  - File
+- default: test-project
+  doc: project name and output directory name, default value "test-project"
+  id: project
+  inputBinding:
+    prefix: --project
+  sbg:toolDefaultValue: test-project
+  type:
+  - string
+- default: hg38
+  doc: genome build, values can be "hg38", "hg19", "b37"
+  id: genome_build
+  inputBinding:
+    prefix: --genome_build
+  sbg:toolDefaultValue: hg38
+  type:
+  - string
+- default: WHOLE_GENOME
+  doc: data_type, values can be either "WHOLE_GENOME" or "EXOME"
+  id: data_type
+  inputBinding:
+    prefix: --data_type
+  sbg:toolDefaultValue: WHOLE_GENOME
+  type:
+  - string
+- default: 99.5
+  doc: VQSR INDEL Tranche for truth-sensitivity-filter-level
+  id: VQSR_indelTranche
+  inputBinding:
+    prefix: --VQSR_indelTranche
+  sbg:toolDefaultValue: 99.5
+  type:
+  - float
+- default: 99.5
+  doc: VQSR SNP Tranche for truth-sensitivity-filter-level
+  id: VQSR_snpTranche
+  inputBinding:
+    prefix: --VQSR_snpTranche
+  sbg:toolDefaultValue: 99.5
+  type:
+  - float
+outputs:
+- doc: The output directory specified in publishDir in the workflow.
+  id: output_dir
+  outputBinding:
+    glob: $(inputs.project)
+  type: Directory
+requirements:
+- class: InlineJavascriptRequirement
+- class: InitialWorkDirRequirement
+  listing:
+  - $(inputs.resourceFiles)
+  - $(inputs.gvcfFolder)
